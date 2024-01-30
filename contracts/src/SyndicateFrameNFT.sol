@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 // By Will Papper
 // Example NFT contract for the Syndicate Frame API
-// Deployed to 0xA8D061B113d6A655bf880Ed7c6722e9d585Be5BA on Base Mainnet
 
 pragma solidity ^0.8.20;
 
