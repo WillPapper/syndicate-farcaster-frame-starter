@@ -1,7 +1,7 @@
 {
   "name": "Built with Syndicate Frame API",
   "description": "A placeholder Frame image and metadata.",
-  "image": "ipfs://QmXcEqpwg7cNUn5bNeSaGcUwbydKRY7Fo8N5HVveYrahMC",
+  "image": "ipfs://QmP9C3BVta8iA6PyLxoHSKSE3BEV9sy76ee5f8SaYnkKQi",
   "attributes": [
     {
       "trait_type": "Background",
@@ -17,7 +17,7 @@
     },
     {
       "trait_type": "Level",
-      "value": 1
+      "value": 4844
     }
   ]
 }
