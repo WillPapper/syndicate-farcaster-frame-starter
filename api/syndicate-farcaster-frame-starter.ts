@@ -2,9 +2,6 @@
 // - SYNDICATE_FRAME_API_KEY: The API key that you received for frame.syndicate.io.
 // DM @Will on Farcaster/@WillPapper on Twitter to get an API key.
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { SyndicateClient } from "@syndicateio/syndicate-node";
-import { createPublicClient, http } from "viem";
-import { baseSepolia, mainnet } from "viem/chains";
 
 export default async function (req: VercelRequest, res: VercelResponse) {
   // Farcaster Frames will send a POST request to this endpoint when the user
@@ -17,7 +14,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          Authorization: "Bearer <your-api-key>"
+          Authorization: "Bearer " + process.env.SYNDICATE_FRAME_API_KEY,
         }
         body: JSON.stringify({
           frameTrustedData: "req.body.frameTrustedData.messageBytes",
