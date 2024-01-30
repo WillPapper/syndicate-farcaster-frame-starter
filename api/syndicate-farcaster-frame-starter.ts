@@ -10,15 +10,15 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   if (req.method == "POST") {
     try {
       // Once your contract is registered, you can mint an NFT using the following code
-      const res = await fetch('https://frame.syndicate.io/api/mint', {
+      const res = await fetch("https://frame.syndicate.io/api/mint", {
         method: "POST",
         headers: {
           "content-type": "application/json",
           Authorization: "Bearer " + process.env.SYNDICATE_FRAME_API_KEY,
-        }
+        },
         body: JSON.stringify({
-          frameTrustedData: "req.body.frameTrustedData.messageBytes",
-        })
+          frameTrustedData: req.body.frameTrustedData.messageBytes,
+        }),
       });
 
       res.status(200).setHeader("Content-Type", "text/html").send(`
