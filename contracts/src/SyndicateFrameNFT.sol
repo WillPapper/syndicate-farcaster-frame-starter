@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
 // By Will Papper
+// Example NFT contract for the Syndicate Frame API
+// Deployed to 0xA8D061B113d6A655bf880Ed7c6722e9d585Be5BA on Base Mainnet
 
 pragma solidity ^0.8.20;
 
@@ -127,6 +129,8 @@ contract SyndicateFrameNFT is ERC721, Ownable {
         emit AuthorizedMinterSet(0x10FD71C6a3eF8F75d65ab9F3d77c364C321Faeb5, true);
     }
 
+    // This function ensures that ETH sent directly to the contract by mistake
+    // is rejected
     fallback() external payable {
         revert("FrameNFTs: Does not accept ETH");
     }
