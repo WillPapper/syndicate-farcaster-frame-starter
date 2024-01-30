@@ -10,8 +10,7 @@ import {Ownable} from "../lib/openzeppelin-contracts/contracts/access/Ownable.so
 
 contract SyndicateFrameNFT is ERC721, Ownable {
     uint256 public currentTokenId = 0;
-    // Change this to your own defaultURI
-    string public defaultURI = "ipfs://QmbEo5t9zbyuXE6aTziNoTL2BESLZPHnJEXAf3q8phKWkF";
+    string public defaultURI;
 
     mapping(address authorizedMinter => bool authorized) public authorizedMinters;
     mapping(uint256 tokenId => string tokenURI) public tokenURIs;
@@ -36,6 +35,9 @@ contract SyndicateFrameNFT is ERC721, Ownable {
     // transfer this to a Safe or other multisig for long-term use!
     // You can call `transferOwnership` to do this.
     constructor() ERC721("SyndicateFrameNFT", "SYNFRAME") Ownable(msg.sender) {
+        // Update this with your own NFT collection's metadata
+        defaultURI = "ipfs://QmbEo5t9zbyuXE6aTziNoTL2BESLZPHnJEXAf3q8phKWkF";
+
         // The deployer is set as an authorized minter, allowing them to set up
         // owner mints manually via the contract as needed
         authorizedMinters[msg.sender] = true;
