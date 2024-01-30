@@ -1,11 +1,12 @@
 {
   "name": "Built with Syndicate Frame API",
   "description": "A placeholder Frame image and metadata.",
+  "external_url": "https://frame.syndicate.io", 
   "image": "ipfs://QmP9C3BVta8iA6PyLxoHSKSE3BEV9sy76ee5f8SaYnkKQi",
   "attributes": [
     {
-      "trait_type": "Website",
-      "value": "frame.syndicate.io"
+      "trait_type": "Background",
+      "value": "Dark"
     },
     {
       "trait_type": "Chain",
