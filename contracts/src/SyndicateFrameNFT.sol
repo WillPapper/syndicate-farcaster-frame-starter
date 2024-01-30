@@ -9,7 +9,7 @@ import {Ownable} from "../lib/openzeppelin-contracts/contracts/access/Ownable.so
 contract SyndicateFrameNFT is ERC721, Ownable {
     uint256 public currentTokenId = 0;
     // Change this to your own defaultURI
-    string public defaultURI = "ipfs://";
+    string public defaultURI = "ipfs://QmcH4hTJQKo5PELUoEVbNJtzuVt9AHsLTDURj3r5K32X6t";
 
     mapping(address authorizedMinter => bool authorized) public authorizedMinters;
     mapping(uint256 tokenId => string tokenURI) public tokenURIs;
