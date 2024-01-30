@@ -1,0 +1,23 @@
+{
+  "name": "Built with Syndicate Frame API",
+  "description": "A placeholder Frame image and metadata.",
+  "image": "ipfs://QmXcEqpwg7cNUn5bNeSaGcUwbydKRY7Fo8N5HVveYrahMC",
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Dark"
+    },
+    {
+      "trait_type": "Chain",
+      "value": "Base"
+    },
+    {
+      "trait_type": "Gas",
+      "value": "Sponsored by Base"
+    },
+    {
+      "trait_type": "Level",
+      "value": 1
+    }
+  ]
+}
