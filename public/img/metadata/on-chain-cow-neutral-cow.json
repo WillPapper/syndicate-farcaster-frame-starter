@@ -1,0 +1,23 @@
+{
+  "name": "Neutral Cow",
+  "description": "An artistic portrayal of a cow in a neutral mood, calm and serene.",
+  "image": "ipfs://QmeK3oULmm64wCKViRfKxo8TtwgUGt8E2HQLpbVphc34h9/on-chain-cow-neutral-cow.png",
+  "attributes": [
+    {
+      "trait_type": "Mood",
+      "value": "Neutral"
+    },
+    {
+      "trait_type": "Background",
+      "value": "Rainbow Meadow"
+    },
+    {
+      "trait_type": "Color",
+      "value": "Black and White"
+    },
+    {
+      "trait_type": "Points",
+      "value": 10
+    }
+  ]
+}
