@@ -9,6 +9,14 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   // responding to a Farcaster Frame button click.
   if (req.method == "POST") {
     try {
+      console.log("Received POST request from Farcaster Frame button click");
+      console.log("Farcaster Frame request body:", req.body);
+      console.log("Farcaster Frame trusted data:", req.body.frameTrustedData);
+      console.log(
+        "Farcaster Frame trusted data messageBytes:",
+        req.body.frameTrustedData.messageBytes
+      );
+
       // Once your contract is registered, you can mint an NFT using the following code
       const syndicateRes = await fetch("https://frame.syndicate.io/api/mint", {
         method: "POST",
@@ -20,6 +28,9 @@ export default async function (req: VercelRequest, res: VercelResponse) {
           frameTrustedData: req.body.frameTrustedData.messageBytes,
         }),
       });
+
+      console.log("Syndicate response:", syndicateRes);
+      console.log("Sending confirmation as Farcaster Frame response");
 
       res.status(200).setHeader("Content-Type", "text/html").send(`
         <!DOCTYPE html>
@@ -57,7 +68,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width" />
-        <meta property="og:title" content="Mint your commemorative NFT for Syndicate's Frame API!" />
+        <meta property="og:title" content="Mint your commemorative NFT for the launch of Syndicate's Frame API!" />
         <meta
           property="og:image"
           content="https://syndicate-farcaster-frame-starter.vercel.app/img/example-frame-farcaster-cropped.png"
@@ -67,7 +78,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
           property="fc:frame:image"
           content="https://syndicate-farcaster-frame-starter.vercel.app/img/example-frame-farcaster-cropped.png"
         />
-        <meta property="fc:frame:button:1" content="Mint your commemorative NFT for the launch of frame.syndicate.io!" />
+        <meta property="fc:frame:button:1" content="Mint your commemorative frame.syndicate.io NFT!" />
         <meta
           name="fc:frame:post_url"
           content="https://syndicate-farcaster-frame-starter.vercel.app/api/syndicate-farcaster-frame-starter"
