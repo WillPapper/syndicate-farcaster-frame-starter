@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 // By Will Papper
 // Example NFT contract for the Syndicate Frame API
-// Deployed to 0x672a0c7127396FAB981acf0b7D90C0FcE2f861CE on Base Mainnet
 
 pragma solidity ^0.8.20;
 
@@ -15,6 +14,10 @@ contract SyndicateFrameNFT is ERC721, Ownable {
     mapping(address authorizedMinter => bool authorized) public authorizedMinters;
     mapping(uint256 tokenId => string tokenURI) public tokenURIs;
     mapping(uint256 tokenId => bool locked) public lockedTokenURIs;
+
+    // Keep track of mint limits
+    uint256 public maxMintPerAddress;
+    mapping(address minted => uint256 count) public mintCount;
 
     event DefaultTokenURISet(string tokenURI);
     event TokenURISet(uint256 indexed tokenId, string tokenURI);
@@ -31,12 +34,18 @@ contract SyndicateFrameNFT is ERC721, Ownable {
         _;
     }
 
+    modifier onlyBelowMaxMint(address to) {
+        require(mintCount[to] < maxMintPerAddress, "FrameNFTs: Max mint reached");
+        _;
+    }
+
     // The deployer is set as the initial owner by default. Make sure to
     // transfer this to a Safe or other multisig for long-term use!
     // You can call `transferOwnership` to do this.
     constructor() ERC721("SyndicateFrameNFT", "SYNFRAME") Ownable(msg.sender) {
         // Update this with your own NFT collection's metadata
-        defaultURI = "ipfs://QmbEo5t9zbyuXE6aTziNoTL2BESLZPHnJEXAf3q8phKWkF";
+        defaultURI = "ipfs://QmSFqezaUhBKr32Z2vgFrbDPGYdbcj8zQcQvsDqbU6b6UH";
+        maxMintPerAddress = 1;
 
         // The deployer is set as an authorized minter, allowing them to set up
         // owner mints manually via the contract as needed
@@ -50,15 +59,17 @@ contract SyndicateFrameNFT is ERC721, Ownable {
 
     // This function is currently the only supported function in the
     // frame.syndicate.io API
-    function mint(address to) public onlyAuthorizedMinter {
+    function mint(address to) public onlyAuthorizedMinter onlyBelowMaxMint(to) {
         ++currentTokenId;
+        ++mintCount[to];
         _mint(to, currentTokenId);
     }
 
     // This function is not yet supported in the frame.syndicate.io API
     // We will update this example repository when it is supported!
-    function mint(address to, string memory _tokenURI) public onlyAuthorizedMinter {
+    function mint(address to, string memory _tokenURI) public onlyAuthorizedMinter onlyBelowMaxMint(to) {
         ++currentTokenId;
+        ++mintCount[to];
         tokenURIs[currentTokenId] = _tokenURI;
         _mint(to, currentTokenId);
 
@@ -103,6 +114,11 @@ contract SyndicateFrameNFT is ERC721, Ownable {
         } else {
             return defaultURI;
         }
+    }
+
+    // Only the owner can set the max mint per address
+    function setMaxMintPerAddress(uint256 _maxMintPerAddress) public onlyOwner {
+        maxMintPerAddress = _maxMintPerAddress;
     }
 
     // Only the owner can set authorized minters. True = authorized, false =
