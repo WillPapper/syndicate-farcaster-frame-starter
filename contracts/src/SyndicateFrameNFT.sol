@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
-// By Will Papper
-// Example NFT contract for the Syndicate Frame API
+// By David Murray
+// check_sometingNFT contract 
 
 pragma solidity ^0.8.20;
 
 import {ERC721} from "../lib/openzeppelin-contracts/contracts/token/ERC721//ERC721.sol";
 import {Ownable} from "../lib/openzeppelin-contracts/contracts/access/Ownable.sol";
+import {Base64} from "../lib/openzeppelin/contracts/utils/Base64.sol";
 
-contract SyndicateFrameNFT is ERC721, Ownable {
+contract check_somethingNFT is ERC721, Ownable {
     uint256 public currentTokenId = 0;
     string public defaultURI;
 
