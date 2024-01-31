@@ -41,12 +41,12 @@ export default async function (req: VercelRequest, res: VercelResponse) {
             <meta property="og:title" content="You've minted your commemorative NFT for Syndicate's Frame API!" />
             <meta
               property="og:image"
-              content="https://syndicate-farcaster-frame-starter.vercel.app/img/example-frame-farcaster-cropped.png"
+              content="https://syndicate-farcaster-frame-starter.vercel.app/img/example-frame-farcaster-cropped-minted.png"
             />
             <meta property="fc:frame" content="vNext" />
             <meta
               property="fc:frame:image"
-              content="https://syndicate-farcaster-frame-starter.vercel.app/img/example-frame-farcaster-cropped.png"
+              content="https://syndicate-farcaster-frame-starter.vercel.app/img/example-frame-farcaster-cropped-minted.png"
             />
             <meta
               property="fc:frame:button:1"
