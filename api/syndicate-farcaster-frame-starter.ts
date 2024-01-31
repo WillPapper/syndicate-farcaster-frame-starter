@@ -11,10 +11,10 @@ export default async function (req: VercelRequest, res: VercelResponse) {
     try {
       console.log("Received POST request from Farcaster Frame button click");
       console.log("Farcaster Frame request body:", req.body);
-      console.log("Farcaster Frame trusted data:", req.body.frameTrustedData);
+      console.log("Farcaster Frame trusted data:", req.body.trustedData);
       console.log(
         "Farcaster Frame trusted data messageBytes:",
-        req.body.frameTrustedData.messageBytes
+        req.body.trustedData.messageBytes
       );
 
       // Once your contract is registered, you can mint an NFT using the following code
@@ -25,7 +25,7 @@ export default async function (req: VercelRequest, res: VercelResponse) {
           Authorization: "Bearer " + process.env.SYNDICATE_FRAME_API_KEY,
         },
         body: JSON.stringify({
-          frameTrustedData: req.body.frameTrustedData.messageBytes,
+          frameTrustedData: req.body.trustedData.messageBytes,
         }),
       });
 
