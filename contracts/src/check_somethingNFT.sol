@@ -6,19 +6,24 @@ pragma solidity ^0.8.20;
 
 import {ERC721} from "../lib/openzeppelin-contracts/contracts/token/ERC721//ERC721.sol";
 import {Ownable} from "../lib/openzeppelin-contracts/contracts/access/Ownable.sol";
+import {Strings} from "../lib/openzeppelin/contracts/utils/Strings.sol";
 import {Base64} from "../lib/openzeppelin/contracts/utils/Base64.sol";
 
+
 contract check_somethingNFT is ERC721, Ownable {
+    using Strings for uint256;
+
     uint256 public currentTokenId = 0;
     string public defaultURI;
+    uint256 public maxMintPerAddress = 1; // Limit to one mint per address
 
-    mapping(address authorizedMinter => bool authorized) public authorizedMinters;
-    mapping(uint256 tokenId => string tokenURI) public tokenURIs;
-    mapping(uint256 tokenId => bool locked) public lockedTokenURIs;
+    mapping(address => bool) public authorizedMinters;
+    mapping(uint256 => string) private _tokenURIs;
+    mapping(uint256 => bool) public lockedTokenURIs;
+    mapping(address => uint256) public mintCount;
 
     // Keep track of mint limits
-    uint256 public maxMintPerAddress;
-    mapping(address minted => uint256 count) public mintCount;
+    mapping(address => uint256) public mintCount;
 
     event DefaultTokenURISet(string tokenURI);
     event TokenURISet(uint256 indexed tokenId, string tokenURI);
@@ -40,13 +45,14 @@ contract check_somethingNFT is ERC721, Ownable {
         _;
     }
 
+
     // The deployer is set as the initial owner by default. Make sure to
     // transfer this to a Safe or other multisig for long-term use!
     // You can call `transferOwnership` to do this.
-    constructor() ERC721("SyndicateFrameNFT", "SYNFRAME") Ownable(msg.sender) {
-        // Update this with your own NFT collection's metadata
-        defaultURI = "ipfs://QmSFqezaUhBKr32Z2vgFrbDPGYdbcj8zQcQvsDqbU6b6UH";
-        maxMintPerAddress = 1;
+    constructor() ERC721("check_somethingNFT", "CHKSMTH") {
+        defaultURI = "ipfs://Qm...";
+        authorizedMinters[msg.sender] = true;
+    }
 
         // The deployer is set as an authorized minter, allowing them to set up
         // owner mints manually via the contract as needed
@@ -109,16 +115,15 @@ contract check_somethingNFT is ERC721, Ownable {
         emit TokenURISet(currentTokenId, _tokenURI);
     }
 
-    // This function is not yet supported in the frame.syndicate.io API
-    // We will update this example repository when it is supported!
-    function setTokenURI(uint256 tokenId, string memory _tokenURI)
-        public
-        onlyAuthorizedMinter
-        onlyUnlockedTokenURI(tokenId)
-    {
-        tokenURIs[tokenId] = _tokenURI;
 
-        emit TokenURISet(tokenId, _tokenURI);
+    // Override the tokenURI function to include the SVG logic
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+
+        // Generate the SVG and encode it as a data URI
+        string memory svg = generateSVG(tokenId);
+        string memory svgBase64Encoded = Base64.encode(bytes(svg));
+        return string(abi.encodePacked("data:image/svg+xml;base64,", svgBase64Encoded));
     }
 
     // Since this action is irreversible, we require the owner to call it
@@ -196,8 +201,13 @@ contract check_somethingNFT is ERC721, Ownable {
     // This function ensures that ETH sent directly to the contract by mistake
     // is rejected
     fallback() external payable {
-        revert("FrameNFTs: Does not accept ETH");
+        revert("check_somethingNFT: Does not accept ETH");
     }
+
+    receive() external payable {
+        revert("check_somethingNFT: Does not accept ETH");
+    }
+
     // Helper function to convert uint to string
     function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
         if (_i == 0) {
