@@ -44,7 +44,7 @@ contract SyndicateFrameNFT is ERC721, Ownable {
     // You can call `transferOwnership` to do this.
     constructor() ERC721("SyndicateFrameNFT", "SYNFRAME") Ownable(msg.sender) {
         // Update this with your own NFT collection's metadata
-        defaultURI = "ipfs://QmbEo5t9zbyuXE6aTziNoTL2BESLZPHnJEXAf3q8phKWkF";
+        defaultURI = "ipfs://QmSFqezaUhBKr32Z2vgFrbDPGYdbcj8zQcQvsDqbU6b6UH";
         maxMintPerAddress = 1;
 
         // The deployer is set as an authorized minter, allowing them to set up
