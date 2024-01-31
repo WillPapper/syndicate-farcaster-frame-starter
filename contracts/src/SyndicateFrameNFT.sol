@@ -65,6 +65,38 @@ contract check_somethingNFT is ERC721, Ownable {
         ++mintCount[to];
         _mint(to, currentTokenId);
     }
+    // Add your new SVG generation function here
+    function generateSVG(uint256 tokenId) internal view returns (string memory) {
+        // Use blockhash as seed for pseudo-randomness
+        uint256 seed = uint256(blockhash(block.number - 1)) + tokenId;
+        bytes memory svgBytes = abi.encodePacked('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">');
+        for (uint i = 0; i < 12; i++) {
+            for (uint j = 0; j < 12; j++) {
+                // Generate color for each pixel
+                string memory color = pseudoRandomColor(seed, i, j);
+                svgBytes = abi.encodePacked(
+                    svgBytes,
+                    '<rect x="', uint2str(i * 10), '" y="', uint2str(j * 10), '" width="10" height="10" fill="', color, '" />'
+                );
+            }
+        }
+        svgBytes = abi.encodePacked(svgBytes, '</svg>');
+        return string(svgBytes);
+    }
+
+    function pseudoRandomColor(uint256 seed, uint i, uint j) private pure returns (string memory) {
+        uint rand = uint(keccak256(abi.encodePacked(seed, i, j))) % 100;
+        if (rand < 70) {
+            return '#000000'; // Black 70% probability
+        } else if (rand < 80) {
+            return '#FF0000'; // Red 10% probability
+        } else if (rand < 90) {
+            return '#0000FF'; // Blue 10% probability
+        } else {
+            return '#00FF00'; // Green 10% probability
+        }
+        // Add more colors as needed
+    }
 
     // This function is not yet supported in the frame.syndicate.io API
     // We will update this example repository when it is supported!
@@ -116,6 +148,19 @@ contract check_somethingNFT is ERC721, Ownable {
             return defaultURI;
         }
     }
+    // Override the existing tokenURI function to include the SVG logic
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+
+        if (bytes(_tokenURIs[tokenId]).length > 0) {
+            return _tokenURIs[tokenId];
+        } else {
+            // Generate the SVG and encode it as a data URI
+            string memory svg = generateSVG(tokenId);
+            string memory svgBase64Encoded = Base64.encode(bytes(svg));
+            return string(abi.encodePacked("data:image/svg+xml;base64,", svgBase64Encoded));
+        }
+    }
 
     // Only the owner can set the max mint per address
     function setMaxMintPerAddress(uint256 _maxMintPerAddress) public onlyOwner {
@@ -153,4 +198,27 @@ contract check_somethingNFT is ERC721, Ownable {
     fallback() external payable {
         revert("FrameNFTs: Does not accept ETH");
     }
+    // Helper function to convert uint to string
+    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
+        if (_i == 0) {
+            return "0";
+        }
+        uint j = _i;
+        uint len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint k = len;
+        while (_i != 0) {
+            k = k-1;
+            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
+        }
+        return string(bstr);
+    }
+}
 }
