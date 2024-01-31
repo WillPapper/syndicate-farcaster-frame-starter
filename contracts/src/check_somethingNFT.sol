@@ -7,7 +7,7 @@ pragma solidity ^0.8.20;
 import {ERC721} from "../lib/openzeppelin-contracts/contracts/token/ERC721//ERC721.sol";
 import {Ownable} from "../lib/openzeppelin-contracts/contracts/access/Ownable.sol";
 import {Strings} from "../lib/openzeppelin/contracts/utils/Strings.sol";
-import {Base64} from "../lib/openzeppelin/contracts/utils/Base64.sol";
+import {Base64} from "../lib/openzeppelin-contracts/contracts/utils/Base64.sol";
 
 
 contract check_somethingNFT is ERC721, Ownable {
@@ -50,7 +50,7 @@ contract check_somethingNFT is ERC721, Ownable {
     // transfer this to a Safe or other multisig for long-term use!
     // You can call `transferOwnership` to do this.
     constructor() ERC721("check_somethingNFT", "CHKSMTH") {
-        defaultURI = "ipfs://Qm...";
+        defaultURI = "ipfs://QmSFqezaUhBKr32Z2vgFrbDPGYdbcj8zQcQvsDqbU6b6UH";
         authorizedMinters[msg.sender] = true;
     }
 
