@@ -1,4 +1,4 @@
-// Two very important environment variables to set that you MUST set in Vercel:
+// A very important environment variable to set that you MUST set in Vercel:
 // - SYNDICATE_FRAME_API_KEY: The API key that you received for frame.syndicate.io.
 // DM @Will on Farcaster/@WillPapper on Twitter to get an API key.
 import { VercelRequest, VercelResponse } from "@vercel/node";
